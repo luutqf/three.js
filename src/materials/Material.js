@@ -1,7 +1,7 @@
 import { Color } from '../math/Color.js';
 import { EventDispatcher } from '../core/EventDispatcher.js';
 import { FrontSide, NormalBlending, LessEqualDepth, AddEquation, OneMinusSrcAlphaFactor, SrcAlphaFactor, AlwaysStencilFunc, KeepStencilOp } from '../constants.js';
-import * as MathUtils from '../math/MathUtils.js';
+import { generateUUID } from '../math/MathUtils.js';
 
 let _materialId = 0;
 
@@ -15,7 +15,7 @@ class Material extends EventDispatcher {
 
 		Object.defineProperty( this, 'id', { value: _materialId ++ } );
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.name = '';
 		this.type = 'Material';
@@ -100,7 +100,7 @@ class Material extends EventDispatcher {
 
 	}
 
-	onBuild( /* shaderobject, renderer */ ) {}
+	// onBeforeRender and onBeforeCompile only supported in WebGLRenderer
 
 	onBeforeRender( /* renderer, scene, camera, geometry, object, group */ ) {}
 
@@ -517,6 +517,12 @@ class Material extends EventDispatcher {
 	set needsUpdate( value ) {
 
 		if ( value === true ) this.version ++;
+
+	}
+
+	onBuild( /* shaderobject, renderer */ ) {
+
+		console.warn( 'Material: onBuild() has been removed.' ); // @deprecated, r166
 
 	}
 
